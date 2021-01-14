@@ -3,8 +3,8 @@ import asynchat, asyncore
 import socket, string
 from struct import *
 
-from .EndpointConnection import EndpointConnection
-from .KnockingEndpointConnection import KnockingEndpointConnection
+from EndpointConnection import EndpointConnection
+from KnockingEndpointConnection import KnockingEndpointConnection
 
 class SocksRequestHandler(asynchat.async_chat):
 
@@ -130,9 +130,9 @@ class SocksRequestHandler(asynchat.async_chat):
 
     def printHex(self, val):
         for c in val:
-            print("%#x" % ord(c), end=' ')
+            print "%#x" % ord(c),
             
-        print("")
+        print ""
 
     def collect_incoming_data(self, data):
         if (self.endpoint != None):
