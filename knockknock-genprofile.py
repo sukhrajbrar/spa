@@ -28,31 +28,8 @@ import mysql.connector
 from mysql.connector import Error
 from knockknock.Profiles import Profiles
 from knockknock.Profile  import Profile
-"""
-try:
-    connection = mysql.connector.connect(host='127.0.0.1',
-                                         database='spa',
-                                         user='root',
-                                         password='mrzira99')
-    if connection.is_connected():
-        db_Info = connection.get_server_info()
-        #print("Connected to MySQL Server version ", db_Info)
-        sql_select_Query = "select * from knockknock;"
-        cursor = connection.cursor()
-        cursor.execute(sql_select_Query)
-        print ("cursor executed")
-        records = cursor.fetchall()
-        print(records)
 
-
-except Error as e:
-    print("Error while connecting to MySQL", e)
-finally:
-    if (connection.is_connected()):
-        cursor.close()
-        connection.close()
-        print("MySQL connection is closed")
-"""
+# database credentials
 db = mysql.connector.connect(user='root', password='mrzira99',
                               host='127.0.0.1',
                               database='spa')
@@ -93,8 +70,8 @@ def createDirectory(profileName):
 
 def storeValuesInDb(knockPort, profileName):
     #random    = open('/dev/urandom', 'rb')
-    cipherKey = secrets.token_hex(16)
-    macKey    = secrets.token_hex(16)
+    cipherKey = secrets.token_urlsafe(16)
+    macKey    = secrets.token_urlsafe(16)
     counter   = 0
 
     #profile = Profile(PROFILES_DIR + profileName, cipherKey, macKey, counter, knockPort)
@@ -102,7 +79,6 @@ def storeValuesInDb(knockPort, profileName):
 
     #Changes made to store keys in db
     profile = """INSERT INTO knockknock ( `cipher`, `counter`, `mac`, `knockport`, `profileName`) VALUES ('%s', %s, '%s', %s, '%s');""" %( cipherKey, counter, macKey, knockPort, profileName)
-    print (profile)
     cursor.execute (profile)
     #random.close()
 
