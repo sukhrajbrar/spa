@@ -91,6 +91,25 @@ def createDirectory(profileName):
     if not os.path.isdir(PROFILES_DIR + profileName):
         os.mkdir(PROFILES_DIR + profileName)
 
+def storeValuesInDb(knockPort, profileName):
+    #random    = open('/dev/urandom', 'rb')
+    cipherKey = secrets.token_hex(16)
+    macKey    = secrets.token_hex(16)
+    counter   = 0
+
+    #profile = Profile(PROFILES_DIR + profileName, cipherKey, macKey, counter, knockPort)
+    #profile.serialize()
+
+    #Changes made to store keys in db
+    profile = """INSERT INTO knockknock ( `cipher`, `counter`, `mac`, `knockport`, `profileName`) VALUES ('%s', %s, '%s', %s, '%s');""" %( cipherKey, counter, macKey, knockPort, profileName)
+    print (profile)
+    cursor.execute (profile)
+    #random.close()
+
+    db.commit()
+
+    print("(Update by Sukhraj Singh Brar)Keys successfully stored in db")
+
 def main(argv):
 
     if len(argv) != 2:
@@ -103,28 +122,11 @@ def main(argv):
     #checkProfile(profileName)
     #checkPortConflict(knockPort)
     #createDirectory(profileName)
+    for i in range(10):
+        storeValuesInDb(knockPort, profileName)
 
-    random    = open('/dev/urandom', 'rb')
-    cipherKey = secrets.token_hex(16)
-    macKey    = secrets.token_hex(16)
-    counter   = 0
-
-    #profile = Profile(PROFILES_DIR + profileName, cipherKey, macKey, counter, knockPort)
-    #profile.serialize()
-
-    #Changes made to store keys in db
-    profile = """INSERT INTO knockknock ( `cipher`, `counter`, `mac`, `knockport`) VALUES ('%s', %s, '%s', %s);""" %( cipherKey, counter, macKey, knockPort)
-    #data = ( 'an', counter, 'bs', knockPort)
-    print (profile)
-    cursor.execute (profile)
-    random.close()
-
-    db.commit()
     cursor.close()
     db.close()
-
-    #print("(Update by Sukhraj Singh Brar)Keys successfully generated in " + PROFILES_DIR + profileName)
-    print("(Update by Sukhraj Singh Brar)Keys successfully generated in ")
 
 if __name__ == '__main__':
     main(sys.argv[1:])
