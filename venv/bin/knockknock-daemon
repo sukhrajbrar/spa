@@ -1,0 +1,7 @@
+#!/home/brar/Desktop/knockknock/venv/bin/python
+# EASY-INSTALL-DEV-SCRIPT: 'knockknock==0.8','knockknock-daemon'
+__requires__ = 'knockknock==0.8'
+__import__('pkg_resources').require('knockknock==0.8')
+__file__ = '/home/brar/Desktop/knockknock/knockknock/knockknock-daemon'
+with open(__file__) as f:
+    exec(compile(f.read(), __file__, 'exec'))
