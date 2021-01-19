@@ -17,7 +17,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
+along with this prgram; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 USA
 
@@ -62,7 +62,7 @@ def handleFirewall(input, config):
 
 def handleKnocks(output, profiles, config):
     dropPrivileges()
-    
+
     logFile      = LogFile('/var/log/kern.log')
     portOpener   = PortOpener(output, config.getDelay())
     knockWatcher = KnockWatcher(config, logFile, profiles, portOpener)
@@ -90,6 +90,6 @@ def main(argv):
     else:
         os.close(output)
         handleFirewall(os.fdopen(input, 'r'), config)
-                
+
 if __name__ == '__main__':
     main(sys.argv[1:])
