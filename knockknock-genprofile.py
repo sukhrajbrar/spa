@@ -35,8 +35,12 @@ db = mysql.connector.connect(user='root', password='mrzira99',
                               host='127.0.0.1',
                               database='spa')
 
+db1 = mysql.connector.connect(user='spa', password='mrzira99',
+                              host='10.2.5.231',
+                              database='spa')
+
 cursor  = db.cursor()
-cursor1 = db.cursor()
+cursor1 = db1.cursor()
 
 DAEMON_DIR   = '/etc/knockknock.d/'
 PROFILES_DIR = DAEMON_DIR + 'profiles/'
@@ -111,6 +115,7 @@ def storeValuesInDb(knockPort, profileName, lastEntry, validKeyLocation, i):
     #random.close()
 
     db.commit()
+    db1.commit()
 
     print("(Update by Sukhraj Singh Brar)Keys successfully stored in db")
 
@@ -138,7 +143,9 @@ def main(argv):
             storeValuesInDb(knockPort, profileName, lastEntry, validKeyLocation, i)
 
     cursor.close()
+    cursor1.close()
     db.close()
+    db1.close()
 
 if __name__ == '__main__':
     main(sys.argv[1:])
