@@ -50,21 +50,20 @@ def usage():
     sys.exit(3)
 
 def checkProfile(profileName):
-    """
+
     if (os.path.isdir(PROFILES_DIR + profileName)):
         print("Profile already exists.  First rm " + PROFILES_DIR + profileName + "/")
         sys.exit(0)
-    """
-    selectStatement = """SELECT * FROM `knockknock` WHERE `profileName` = '%s';"""%(profileName)
-    cursor.execute(selectStatement)
+
+    #selectStatement = """SELECT * FROM `knockknock` WHERE `profileName` = '%s';"""%(profileName)
+    """cursor.execute(selectStatement)
     result = cursor.fetchall()
     if len(result) == 0:
         return 0
     else:
         return 1
-
-def checkPortConflict(knockPort):
     """
+def checkPortConflict(knockPort):
     if (not os.path.isdir(PROFILES_DIR)):
         return
 
@@ -73,15 +72,15 @@ def checkPortConflict(knockPort):
 
     if (matchingProfile != None):
         print("A profile already exists for knock port: " + str(knockPort) + " at this location: " + matchingProfile.getDirectory())
-    """
-    selectStatement = """SELECT * FROM `knockknock` WHERE `knockport` = %s;"""%(knockPort)
-    cursor.execute(selectStatement)
+
+    #selectStatement = """SELECT * FROM `knockknock` WHERE `knockport` = %s;"""%(knockPort)
+    """cursor.execute(selectStatement)
     result = cursor.fetchall()
     if len(result) == 0:
         return 0
     else:
         return 1
-
+    """
 def createDirectory(profileName):
     if not os.path.isdir(DAEMON_DIR):
         os.mkdir(DAEMON_DIR)
@@ -98,26 +97,27 @@ def storeValuesInDb(knockPort, profileName, lastEntry, validKeyLocation, i):
     macKey    = secrets.token_urlsafe(16)
     counter   = 0
 
-    #profile = Profile(PROFILES_DIR + profileName, cipherKey, macKey, counter, knockPort)
-    #profile.serialize()
+    profile = Profile(PROFILES_DIR + profileName, cipherKey, macKey, counter, knockPort)
+    profile.serialize()
+    """
     currentEntry = lastEntry+i+1
     if  currentEntry == validKeyLocation:
         valid = 1
     else:
         valid = 0
-
-    profile = """INSERT INTO knockknock ( `cipher`, `counter`, `mac`, `knockport`, `profileName`)
-                VALUES ('%s', %s, '%s', %s, '%s');""" %( cipherKey, counter, macKey, knockPort, profileName)
-    dataInValidKey = """INSERT INTO `validkey`(`Number`, `Valid`, `profileName`)
-                        VALUES (%s, %s, '%s');"""%(currentEntry, valid, profileName)
-    cursor.execute (profile)
-    cursor1.execute (dataInValidKey)
+    """
+    #profile = """INSERT INTO knockknock ( `cipher`, `counter`, `mac`, `knockport`, `profileName`)
+    #            VALUES ('%s', %s, '%s', %s, '%s');""" %( cipherKey, counter, macKey, knockPort, profileName)
+    #dataInValidKey = """INSERT INTO `validkey`(`Number`, `Valid`, `profileName`)
+    #                    VALUES (%s, %s, '%s');"""%(currentEntry, valid, profileName)
+    #cursor.execute (profile)
+    #cursor1.execute (dataInValidKey)
     #random.close()
 
-    db.commit()
-    db1.commit()
+    #db.commit()
+    #db1.commit()
 
-    print("(Update by Sukhraj Singh Brar)Keys successfully stored in db")
+    #print("(Update by Sukhraj Singh Brar)Keys successfully stored in db")
 
 def main(argv):
 
@@ -129,23 +129,31 @@ def main(argv):
     #knockPort   = argv[1]
     checkPort = checkPortConflict(knockPort)
     checkProfileName = checkProfile(profileName)
+    """
     if checkPort == 1:
         print("A profile already exists for knock port: ", knockPort)
     elif checkProfileName == 1:
         print("A profile already exists for this Profile Name: ", profileName)
     else:
-        lastEntryQuery = """SELECT `Number` FROM `knockknock` ORDER BY `Number` DESC LIMIT 1;"""
-        cursor.execute (lastEntryQuery)
-        lastEntry = cursor.fetchone()[0]
-        validKeyLocation = random.randint (lastEntry+1, lastEntry+10)
-        #createDirectory(profileName)
-        for i in range(10):
-            storeValuesInDb(knockPort, profileName, lastEntry, validKeyLocation, i)
-
-    cursor.close()
+        """
+        #lastEntryQuery = """SELECT `Number` FROM `knockknock` ORDER BY `Number` DESC LIMIT 1;"""
+        #cursor.execute (lastEntryQuery)
+        #lastEntry = cursor.fetchone()[0]
+        #validKeyLocation = random.randint (lastEntry+1, lastEntry+10)
+    createDirectory(profileName)
+    random    = open('/dev/urandom', 'rb')
+    cipherKey = random.read(16)
+    macKey    = random.read(16)
+    counter   = 0
+    profile = Profile(PROFILES_DIR + profileName, cipherKey, macKey, counter, knockPort)
+    profile.serialize()
+        #for i in range(10):
+            #storeValuesInDb(knockPort, profileName, lastEntry, validKeyLocation, i)
+    random.close()
+    """cursor.close()
     cursor1.close()
     db.close()
-    db1.close()
+    db1.close()"""
 
 if __name__ == '__main__':
     main(sys.argv[1:])

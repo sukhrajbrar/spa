@@ -50,13 +50,11 @@ class CryptoEngine:
         counterCrypt   = self.encryptCounter(self.counter)
         self.counter   = self.counter + 1
         encrypted      = str()
-
         for i in range((len(plaintextData))):
-            encrypted += chr(ord(plaintextData[i]) ^ ord(counterCrypt[i]))
+            encrypted += chr(plaintextData[i] ^ counterCrypt[i])
 
         self.profile.setCounter(self.counter)
         self.profile.storeCounter()
-
         return encrypted
 
     def decrypt(self, encryptedData, windowSize):
@@ -64,13 +62,13 @@ class CryptoEngine:
             try:
                 counterCrypt = self.encryptCounter(self.counter + x)
                 decrypted    = str()
-                
+
                 for i in range((len(encryptedData))):
-                    decrypted += chr(ord(encryptedData[i]) ^ ord(counterCrypt[i]))
-                    
+                    decrypted += chr(encryptedData[i] ^ counterCrypt[i])
+
                 port = decrypted[:2]
                 mac  = decrypted[2:]
-                    
+
                 self.verifyMac(port, mac)
                 self.counter += x + 1
 

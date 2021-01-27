@@ -23,7 +23,6 @@ import stat
 from struct import *
 
 from .CryptoEngine import CryptoEngine
-
 class Profile:
 
     def __init__(self, directory, cipherKey=None, macKey=None, counter=None, knockPort=None):
@@ -59,7 +58,7 @@ class Profile:
         return self.ipAddressList
 
     def setIPAddrs(self, ipAddressList):
-        self.ipAddressList = ipAddressList        
+        self.ipAddressList = ipAddressList
 
     def getName(self):
         return self.name
@@ -102,17 +101,17 @@ class Profile:
     def loadConfig(self):
         config = configparser.SafeConfigParser()
         config.read(self.directory + "/config")
-        
+
         return config.get('main', 'knock_port')
 
     def loadKey(self, keyFile):
         file = open(keyFile, 'r')
-        key  = binascii.a2b_base64(file.readline())        
+        key  = binascii.a2b_base64(file.readline())
 
         file.close()
         return key
 
-    def storeCipherKey(self):        
+    def storeCipherKey(self):
         self.storeKey(self.cipherKey, self.directory + "/cipher.key")
 
     def storeMacKey(self):
@@ -140,7 +139,7 @@ class Profile:
         self.setPermissions(self.directory + "/config")
 
     def storeKey(self, key, path):
-        file = open(path, 'w')
+        file = open(path, 'wb')
         file.write(binascii.b2a_base64(key))
         file.close()
 
@@ -156,5 +155,5 @@ class Profile:
     def printHex(self, val):
         for c in val:
             print("%#x" % ord(c), end=' ')
-            
+
         print("")
