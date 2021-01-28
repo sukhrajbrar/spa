@@ -94,7 +94,6 @@ def main(argv):
     packetData   = (profile.encrypt(port)).encode('cp037')
     knockPort    = profile.getKnockPort()
     (idField, seqField, ackField, winField) = unpack('!HIIH', packetData)
-    print(unpack('!HIIH', packetData))
     hping = existsInPath("hping3")
 
     if hping is None:

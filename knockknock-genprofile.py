@@ -29,7 +29,7 @@ import mysql.connector
 from mysql.connector import Error
 from knockknock.Profiles import Profiles
 from knockknock.Profile  import Profile
-
+"""
 # database credentials
 db = mysql.connector.connect(user='root', password='mrzira99',
                               host='127.0.0.1',
@@ -41,7 +41,7 @@ db1 = mysql.connector.connect(user='spa', password='mrzira99',
 
 cursor  = db.cursor()
 cursor1 = db1.cursor()
-
+"""
 DAEMON_DIR   = '/etc/knockknock.d/'
 PROFILES_DIR = DAEMON_DIR + 'profiles/'
 
