@@ -21,6 +21,7 @@ import syslog
 from .LogEntry import LogEntry
 from .MacFailedException import MacFailedException
 
+
 class KnockWatcher:
 
     def __init__(self, config, logFile, profiles, portOpener):

@@ -19,6 +19,7 @@
 import os, hmac, hashlib
 from .MacFailedException import MacFailedException
 from Crypto.Cipher import AES
+
 from struct import *
 
 class CryptoEngine:
@@ -28,11 +29,13 @@ class CryptoEngine:
         self.counter   = counter
         self.macKey    = macKey
         self.cipherKey = cipherKey
-        self.cipher    = AES.new(self.cipherKey, AES.MODE_ECB)
+        #self.cipher    = AES.new(self.cipherKey, AES.MODE_ECB)
 
     def calculateMac(self, port):
+        print("port is ", port)
         hmacSha = hmac.new(self.macKey, port, hashlib.sha1)
         mac     = hmacSha.digest()
+        print("mac is: ", mac)
         return mac[:10]
 
     def verifyMac(self, port, remoteMac):
@@ -46,33 +49,50 @@ class CryptoEngine:
         return self.cipher.encrypt(counterBytes)
 
     def encrypt(self, plaintextData):
+        """
         plaintextData += self.calculateMac(plaintextData)
         counterCrypt   = self.encryptCounter(self.counter)
+        print(counterCrypt, plaintextData)
         self.counter   = self.counter + 1
         encrypted      = str()
         for i in range((len(plaintextData))):
             encrypted += chr(plaintextData[i] ^ counterCrypt[i])
 
+        """
+        cipherKey      = str(self.profile.loadCipherKey())[:10]
+        macKey         = str(self.profile.loadMacKey())[:10]
+        cipherCrypt    = cipherKey + str(self.counter).zfill(2)
+        macCrypt       = macKey + str(plaintextData).zfill(2)
+        encrypted      = ''
+        for i in range(len(cipherCrypt)):
+            encrypted += chr(ord(cipherCrypt[i])^ord(macCrypt[i]))
+            
+        self.counter = self.counter + 1
         self.profile.setCounter(self.counter)
         self.profile.storeCounter()
-        return encrypted
+        print (bytes(str(encrypted),'ascii'))
+        return bytes(str(encrypted),'ascii')
+        #return encrypted.encode('cp037')
 
     def decrypt(self, encryptedData, windowSize):
+        counter = 19
         for x in range(windowSize):
             try:
-                counterCrypt = self.encryptCounter(self.counter + x)
+                counterCrypt = self.encryptCounter(counter + x)
                 decrypted    = str()
 
-                for i in range((len(encryptedData))):
+                for i in range(len(encryptedData)):
                     decrypted += chr(encryptedData[i] ^ counterCrypt[i])
 
+                decrypted = decrypted.encode('cp037')
+                if x == 19:
+                    print(decrypted)
                 port = decrypted[:2]
                 mac  = decrypted[2:]
-
                 self.verifyMac(port, mac)
-                self.counter += x + 1
+                counter += x + 1
 
-                self.profile.setCounter(self.counter)
+                self.profile.setCounter(counter)
                 self.profile.storeCounter()
 
                 return int(unpack("!H", port)[0])

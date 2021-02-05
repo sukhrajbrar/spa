@@ -106,7 +106,8 @@ class Profile:
 
     def loadKey(self, keyFile):
         file = open(keyFile, 'r')
-        key  = binascii.a2b_base64(file.readline())
+        #key  = binascii.a2b_base64(file.readline())
+        key   = file.readline()
 
         file.close()
         return key
@@ -126,6 +127,7 @@ class Profile:
         self.counterFile.seek(0)
         self.counterFile.write(str(self.counter) + "\n")
         self.counterFile.flush()
+        print("counter is",self.counter)
 
     def storeConfig(self):
         config = configparser.SafeConfigParser()

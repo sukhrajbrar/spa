@@ -90,8 +90,8 @@ def main(argv):
     (port, host) = parseArguments(argv)
     verifyPermissions()
     profile      = getProfile(host)
-    port         = pack('!H', int(port))
-    packetData   = (profile.encrypt(port)).encode('cp037')
+    #port         = pack('!H', int(port))
+    packetData   = profile.encrypt(port)
     knockPort    = profile.getKnockPort()
     (idField, seqField, ackField, winField) = unpack('!HIIH', packetData)
     hping = existsInPath("hping3")
@@ -115,6 +115,7 @@ def main(argv):
     except OSError:
         print("Error: Do you have hping3 installed?")
         sys.exit(3)
+
 
 if __name__ == '__main__':
     main(sys.argv[1:])
