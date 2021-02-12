@@ -17,7 +17,21 @@
 #
 
 import os, socket
+import mysql.connector
 from .Profile import Profile
+
+# database credentials
+db = mysql.connector.connect(user='root', password='mrzira99',
+                              host='127.0.0.1',
+                              database='spa')
+
+db1 = mysql.connector.connect(user='spa', password='mrzira99',
+                              host='10.2.5.231',
+                              database='spa')
+
+cursor  = db.cursor()
+cursor1 = db1.cursor()
+
 
 class Profiles:
 
@@ -28,12 +42,25 @@ class Profiles:
             if os.path.isdir(os.path.join(directory, item)):
                 self.profiles.append(Profile(os.path.join(directory, item)))
 
-    def getProfileForPort(self, port):
+    def getProfileForPort(port):
+        query = """SELECT * FROM `knockknock` WHERE `knockport` = %s;"""%(port)
+        cursor.execute(query)
+        result = cursor.fetchall()
+        for i in range(len(result)):
+            (Number, profileName, cipher, counter, mac, knockport) = result[i]
+            matchingQuery = """Select `Valid` from `validkey` WHERE `Number`= %s;"""%(Number)
+            cursor1.execute(matchingQuery)
+            data = cursor1.fetchone()
+            (check) = data[0]
+            if check == 1:
+                return result[i]
+
+        return None
+        """
         for profile in self.profiles:
             if (int(profile.getKnockPort()) == int(port)):
                 return profile
-
-        return None
+        return None"""
 
     def getProfileForName(self, name):
         for profile in self.profiles:
@@ -45,7 +72,7 @@ class Profiles:
     def getProfileForIP(self, ip):
         for profile in self.profiles:
             ips = profile.getIPAddrs()
-                        
+
             if ip in ips:
                 return profile
 
@@ -55,8 +82,13 @@ class Profiles:
         for profile in self.profiles:
             name                     = profile.getName()
             address, alias, addrlist = socket.gethostbyname_ex(name)
-            
+
             profile.setIPAddrs(addrlist)
 
     def isEmpty(self):
         return len(self.profiles) == 0
+
+cursor.close()
+cursor1.close()
+db.close()
+db1.close()

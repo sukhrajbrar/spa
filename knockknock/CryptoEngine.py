@@ -66,16 +66,16 @@ class CryptoEngine:
         encrypted      = ''
         for i in range(len(cipherCrypt)):
             encrypted += chr(ord(cipherCrypt[i])^ord(macCrypt[i]))
-            
-        self.counter = self.counter + 1
+
+        self.counter = self.counter
         self.profile.setCounter(self.counter)
         self.profile.storeCounter()
         print (bytes(str(encrypted),'ascii'))
         return bytes(str(encrypted),'ascii')
         #return encrypted.encode('cp037')
 
-    def decrypt(self, encryptedData, windowSize):
-        counter = 19
+    def decrypt(encryptedData, profile):
+        """counterd = 0
         for x in range(windowSize):
             try:
                 counterCrypt = self.encryptCounter(counter + x)
@@ -101,3 +101,14 @@ class CryptoEngine:
                 pass
 
         raise MacFailedException("Ciphertext failed to decrypt in range...")
+        """
+        decrypted = ''
+        (Number, profileName, cipher, counter, mac, knockport) = profile
+        cipherCrypt = str(cipher) + str(counter).zfill(2)
+        for i in range(len(encryptedData)):
+            decrypted += chr(data[i]^ord(cipherCrypt[i]))
+
+        if decrypted[:10] == mac:
+            return "Mac id is: " + str(macCrypt[:10]) + " Port number is: "+ str(macCrypt[10:])
+        else:
+            return MacFailedException("Ciphertext failed to decrypt in range...")

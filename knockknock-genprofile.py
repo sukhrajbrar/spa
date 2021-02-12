@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 __author__ = "Moxie Marlinspike"
 __email__  = "moxie@thoughtcrime.org"
@@ -126,7 +126,7 @@ def main(argv):
     knockPort   = argv[0]
     profileName = argv[1]
     #knockPort   = argv[1]
-    
+
     checkPort = checkPortConflict(knockPort)
     checkProfileName = checkProfile(profileName)
 

@@ -60,25 +60,24 @@ def handleFirewall(input, config):
     portOpener = PortOpener(input, config.getDelay())
     portOpener.waitForRequests()
 
-def handleKnocks(output, profiles, config):
+def handleKnocks(output, config):
     dropPrivileges()
 
     logFile      = LogFile('/var/log/kern.log')
     portOpener   = PortOpener(output, config.getDelay())
-    knockWatcher = KnockWatcher(config, logFile, profiles, portOpener)
+    knockWatcher = KnockWatcher(config, logFile, portOpener)
 
     knockWatcher.tailAndProcess()
 
 def main(argv):
     checkPrivileges()
-    checkConfiguration()
+    #checkConfiguration()
 
-    profiles   = Profiles('/etc/knockknock.d/profiles/')
+    #profiles   = Profiles('/etc/knockknock.d/profiles/')
     config     = DaemonConfiguration('/etc/knockknock.d/config')
 
-    if (profiles.isEmpty()):
-        print('WARNING: Running knockknock-daemon without any active profiles.')
-
+    #if (profiles.isEmpty()):
+    #    print('WARNING: Running knockknock-daemon without any active profiles.')
     knockknock.daemonize.createDaemon()
 
     input, output = os.pipe()
@@ -86,7 +85,7 @@ def main(argv):
 
     if pid:
         os.close(input)
-        handleKnocks(os.fdopen(output, 'w'), profiles, config)
+        handleKnocks(os.fdopen(output, 'w'), config)
     else:
         os.close(output)
         handleFirewall(os.fdopen(input, 'r'), config)

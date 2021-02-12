@@ -20,32 +20,51 @@ import syslog
 
 from .LogEntry import LogEntry
 from .MacFailedException import MacFailedException
-
+from .CryptoEngine import CryptoEngine
+from .Profiles import Profiles
 
 class KnockWatcher:
 
-    def __init__(self, config, logFile, profiles, portOpener):
+    def __init__(self, config, logFile, portOpener):
         self.config     = config
         self.logFile    = logFile
-        self.profiles   = profiles
+        #self.profiles   = profiles
         self.portOpener = portOpener
-
+    """
     def tailAndProcess(self):
         for line in self.logFile.tail():
             try:
                 logEntry = LogEntry(line)
-                profile  = self.profiles.getProfileForPort(logEntry.getDestinationPort())
+                profile  = Profiles.getProfileForPort(logEntry.getDestinationPort())
 
                 if (profile != None):
                     try:
                         ciphertext = logEntry.getEncryptedData()
-                        port       = profile.decrypt(ciphertext, self.config.getWindow())
+                        port       = CryptoEngine.decrypt(ciphertext, profile)
                         sourceIP   = logEntry.getSourceIP()
 
                         self.portOpener.open(sourceIP, port)
+                        print("Received authenticated port-knock for port ")
                         syslog.syslog("Received authenticated port-knock for port " + str(port) + " from " + sourceIP)
                     except MacFailedException:
                         pass
             except:
 #                print "Unexpected error:", sys.exc_info()
                 syslog.syslog("knocknock skipping unrecognized line.")
+    """
+    def tailAndProcess(self):
+        for line in self.logFile.tail():
+            logEntry = LogEntry(line)
+            profile  = Profiles.getProfileForPort(logEntry.getDestinationPort())
+
+            if (profile != None):
+                try:
+                    ciphertext = logEntry.getEncryptedData()
+                    port       = CryptoEngine.decrypt(ciphertext, profile)
+                    sourceIP   = logEntry.getSourceIP()
+
+                    self.portOpener.open(sourceIP, port)
+                    print("Received authenticated port-knock for port ")
+                    syslog.syslog("Received authenticated port-knock for port " + str(port) + " from " + sourceIP)
+                except MacFailedException:
+                    print("SomeThing wrong")
