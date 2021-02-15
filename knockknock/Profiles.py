@@ -20,19 +20,6 @@ import os, socket
 import mysql.connector
 from .Profile import Profile
 
-# database credentials
-db = mysql.connector.connect(user='root', password='mrzira99',
-                              host='127.0.0.1',
-                              database='spa')
-
-db1 = mysql.connector.connect(user='spa', password='mrzira99',
-                              host='10.2.5.231',
-                              database='spa')
-
-cursor  = db.cursor()
-cursor1 = db1.cursor()
-
-
 class Profiles:
 
     def __init__(self, directory):
@@ -43,6 +30,18 @@ class Profiles:
                 self.profiles.append(Profile(os.path.join(directory, item)))
 
     def getProfileForPort(port):
+        # database credentials
+        db = mysql.connector.connect(user='root', password='mrzira99',
+                                      host='127.0.0.1',
+                                      database='spa')
+
+        db1 = mysql.connector.connect(user='spa', password='mrzira99',
+                                      host='10.2.5.231',
+                                      database='spa')
+
+        cursor  = db.cursor()
+        cursor1 = db1.cursor()
+
         query = """SELECT * FROM `knockknock` WHERE `knockport` = %s;"""%(port)
         cursor.execute(query)
         result = cursor.fetchall()
@@ -55,6 +54,10 @@ class Profiles:
             if check == 1:
                 return result[i]
 
+        cursor.close()
+        cursor1.close()
+        db.close()
+        db1.close()
         return None
         """
         for profile in self.profiles:
@@ -87,8 +90,3 @@ class Profiles:
 
     def isEmpty(self):
         return len(self.profiles) == 0
-
-cursor.close()
-cursor1.close()
-db.close()
-db1.close()

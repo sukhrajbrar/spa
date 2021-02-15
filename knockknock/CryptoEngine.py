@@ -106,7 +106,7 @@ class CryptoEngine:
         (Number, profileName, cipher, counter, mac, knockport) = profile
         cipherCrypt = str(cipher) + str(counter).zfill(2)
         for i in range(len(encryptedData)):
-            decrypted += chr(data[i]^ord(cipherCrypt[i]))
+            decrypted += chr(encryptedData[i]^ord(cipherCrypt[i]))
 
         if decrypted[:10] == mac:
             return "Mac id is: " + str(macCrypt[:10]) + " Port number is: "+ str(macCrypt[10:])
