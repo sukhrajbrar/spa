@@ -30,7 +30,7 @@ class KnockWatcher:
         self.logFile    = logFile
         #self.profiles   = profiles
         self.portOpener = portOpener
-    """
+
     def tailAndProcess(self):
         for line in self.logFile.tail():
             try:
@@ -68,3 +68,4 @@ class KnockWatcher:
                     syslog.syslog("Received authenticated port-knock for port " + str(port) + " from " + sourceIP)
                 except MacFailedException:
                     print("SomeThing wrong")
+    """
