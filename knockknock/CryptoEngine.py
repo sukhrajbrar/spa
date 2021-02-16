@@ -109,6 +109,7 @@ class CryptoEngine:
             decrypted += chr(encryptedData[i]^ord(cipherCrypt[i]))
 
         if decrypted[:10] == mac:
-            return "Mac id is: " + str(macCrypt[:10]) + " Port number is: "+ str(macCrypt[10:])
+            print("Mac id is: " + str(decrypted[:10]) + " Port number is: "+ str(decrypted[10:]))
+            return "Mac id is: " + str(decrypted[:10]) + " Port number is: "+ str(decrypted[10:])
         else:
             return MacFailedException("Ciphertext failed to decrypt in range...")
