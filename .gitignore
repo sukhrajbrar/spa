@@ -1,4 +1,7 @@
 *.pyc
 .idea
+clientfile.py
+serverfilenew.py
+serverfile.py
 MANIFEST
 dist
