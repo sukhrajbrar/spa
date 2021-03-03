@@ -44,28 +44,9 @@ class KnockWatcher:
                         sourceIP   = logEntry.getSourceIP()
 
                         self.portOpener.open(sourceIP, port)
-                        print("Received authenticated port-knock for port ")
                         syslog.syslog("Received authenticated port-knock for port " + str(port) + " from " + sourceIP)
                     except MacFailedException:
                         pass
             except:
 #                print "Unexpected error:", sys.exc_info()
                 syslog.syslog("knocknock skipping unrecognized line.")
-    """
-    def tailAndProcess(self):
-        for line in self.logFile.tail():
-            logEntry = LogEntry(line)
-            profile  = Profiles.getProfileForPort(logEntry.getDestinationPort())
-
-            if (profile != None):
-                try:
-                    ciphertext = logEntry.getEncryptedData()
-                    port       = CryptoEngine.decrypt(ciphertext, profile)
-                    sourceIP   = logEntry.getSourceIP()
-
-                    self.portOpener.open(sourceIP, port)
-                    print("Received authenticated port-knock for port ")
-                    syslog.syslog("Received authenticated port-knock for port " + str(port) + " from " + sourceIP)
-                except MacFailedException:
-                    print("SomeThing wrong")
-    """

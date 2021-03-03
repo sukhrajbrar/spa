@@ -127,7 +127,6 @@ class Profile:
         self.counterFile.seek(0)
         self.counterFile.write(str(self.counter) + "\n")
         self.counterFile.flush()
-        print("counter is",self.counter)
 
     def storeConfig(self):
         config = configparser.SafeConfigParser()

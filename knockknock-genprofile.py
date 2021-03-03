@@ -144,6 +144,10 @@ def main(argv):
         for i in range(10):
             storeValuesInDb(knockPort, profileName, lastEntry, validKeyLocation, i)
 
+    cursor.close()
+    cursor1.close()
+    db.close()
+    db1.close()
     """
     createDirectory(profileName)
     cipherKey = secrets.token_bytes(16)
@@ -152,10 +156,7 @@ def main(argv):
     profile = Profile(PROFILES_DIR + profileName, cipherKey, macKey, counter, knockPort)
     profile.serialize()
     """
-    cursor.close()
-    cursor1.close()
-    db.close()
-    db1.close()
+
 
 if __name__ == '__main__':
     main(sys.argv[1:])

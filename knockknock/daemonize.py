@@ -57,10 +57,10 @@ def createDaemon():
             os.umask(UMASK)
         else:
             pass
-            #os._exit(0)	# Exit parent (the first child) of the second child.
+            os._exit(0)	# Exit parent (the first child) of the second child.
     else:
         pass
-        #os._exit(0)	# Exit parent of the first child.
+        os._exit(0)	# Exit parent of the first child.
 
 #   import resource		# Resource usage information.
 #   maxfd = resource.getrlimit(resource.RLIMIT_NOFILE)[1]

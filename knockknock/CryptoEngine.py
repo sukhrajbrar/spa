@@ -32,10 +32,8 @@ class CryptoEngine:
         #self.cipher    = AES.new(self.cipherKey, AES.MODE_ECB)
 
     def calculateMac(self, port):
-        print("port is ", port)
         hmacSha = hmac.new(self.macKey, port, hashlib.sha1)
         mac     = hmacSha.digest()
-        print("mac is: ", mac)
         return mac[:10]
 
     def verifyMac(self, port, remoteMac):
@@ -70,7 +68,6 @@ class CryptoEngine:
         self.counter = self.counter
         self.profile.setCounter(self.counter)
         self.profile.storeCounter()
-        print (bytes(str(encrypted),'ascii'))
         return bytes(str(encrypted),'ascii')
         #return encrypted.encode('cp037')
 
@@ -109,7 +106,6 @@ class CryptoEngine:
             decrypted += chr(encryptedData[i]^ord(cipherCrypt[i]))
 
         if decrypted[:10] == mac:
-            #print("Mac id is: " + str(decrypted[:10]) + " Port number is: "+ str(decrypted[10:]))
             return int(decrypted[10:])
         else:
             return MacFailedException("Ciphertext failed to decrypt in range...")
