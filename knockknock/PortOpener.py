@@ -39,7 +39,6 @@ class PortOpener:
             description = 'INPUT -m limit --limit 1/minute --limit-burst 1 -m state --state NEW -p tcp -s ' + sourceIP + ' --dport ' + str(port) + ' -j ACCEPT'
             command     = 'sudo iptables -A ' + description
             command     = command.split()
-            print(command)
             subprocess.call(command, shell=False)
 
             RuleTimer(self.openDuration, description).start()
