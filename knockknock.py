@@ -111,8 +111,8 @@ def main(argv):
     try:
         subprocess.call(command, shell=False, stdout=open('/dev/null', 'w'), stderr=subprocess.STDOUT)
         with open('clienttimefile.txt', 'a') as f:
-            f.write(str(time.time_ns()))
-            
+            f.write(str(time.time_ns()) +'\n')
+
         print('Knock sent.')
 
     except OSError:
