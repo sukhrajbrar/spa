@@ -1,5 +1,5 @@
+#!/usr/bin/python3
 """knockknock-daemon implements Moxie Marlinspike's port knocking protocol."""
-
 __author__ = "Moxie Marlinspike"
 __email__  = "moxie@thoughtcrime.org"
 __license__= """

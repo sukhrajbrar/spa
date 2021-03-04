@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 __author__ = "Moxie Marlinspike"
 __email__  = "moxie@thoughtcrime.org"
 __license__= """
