@@ -40,6 +40,9 @@ class PortOpener:
             command     = 'sudo iptables -A ' + description
             command     = command.split()
             subprocess.call(command, shell=False)
+            f = open('servertimefile.txt', 'w')
+            f.write(str(time.time_ns()))
+            f.close()
 
             RuleTimer(self.openDuration, description).start()
 

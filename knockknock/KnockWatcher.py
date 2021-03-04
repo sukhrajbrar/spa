@@ -17,7 +17,6 @@
 #
 
 import syslog
-import time
 
 from .LogEntry import LogEntry
 from .MacFailedException import MacFailedException
@@ -45,9 +44,6 @@ class KnockWatcher:
                         sourceIP   = logEntry.getSourceIP()
 
                         self.portOpener.open(sourceIP, port)
-                        f = open('servertimefile.txt', 'w')
-                        f.write(str(time.time_ns()))
-                        f.close()
                         syslog.syslog("Received authenticated port-knock for port " + str(port) + " from " + sourceIP)
                     except MacFailedException:
                         pass
