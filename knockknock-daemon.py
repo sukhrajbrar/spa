@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """knockknock-daemon implements Moxie Marlinspike's port knocking protocol."""
 
 __author__ = "Moxie Marlinspike"
