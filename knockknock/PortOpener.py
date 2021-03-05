@@ -36,7 +36,6 @@ class PortOpener:
                 syslog.syslog("knockknock.PortOpener: Parent process is closed.  Terminating.")
                 os._exit(4)
 
-            print('I`m in port opener')    
             description = 'INPUT -m limit --limit 1/minute --limit-burst 1 -m state --state NEW -p tcp -s ' + sourceIP + ' --dport ' + str(port) + ' -j ACCEPT'
             command     = 'sudo iptables -A ' + description
             command     = command.split()
