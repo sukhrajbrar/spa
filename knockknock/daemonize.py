@@ -56,10 +56,10 @@ def createDaemon():
             os.chdir(WORKDIR)
             os.umask(UMASK)
         else:
-            pass
+            #pass
             os._exit(0)	# Exit parent (the first child) of the second child.
     else:
-        pass
+        #pass
         os._exit(0)	# Exit parent of the first child.
 
 #   import resource		# Resource usage information.
