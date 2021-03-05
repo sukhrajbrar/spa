@@ -41,7 +41,7 @@ class PortOpener:
             command     = command.split()
             subprocess.call(command, shell=False)
             with open('/home/ubuntu/spa/servertimefile.txt', 'a') as f:
-                f.write(str(time.time_ns(), '\n'))
+                f.write(str(time.time_ns()), '\n')
 
             RuleTimer(self.openDuration, description).start()
 
