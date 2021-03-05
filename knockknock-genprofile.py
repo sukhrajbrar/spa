@@ -157,7 +157,7 @@ def main(argv):
             cursor.execute (lastEntryQuery)
             lastEntry = cursor.fetchone()[0]
             validKeyLocation = random.randint (lastEntry+1, lastEntry+10)
-            for i in range(10):
+            for i in range(50):
                 storeValuesInDb(knockPort, profileName, lastEntry, validKeyLocation, i)
 
     except mysql.connector.Error as e:
