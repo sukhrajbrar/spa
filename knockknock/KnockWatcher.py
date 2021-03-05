@@ -36,7 +36,7 @@ class KnockWatcher:
             try:
                 logEntry = LogEntry(line)
                 profile  = Profiles.getProfileForPort(logEntry.getDestinationPort())
-
+                print(profile)
                 if (profile != None):
                     try:
                         ciphertext = logEntry.getEncryptedData()
