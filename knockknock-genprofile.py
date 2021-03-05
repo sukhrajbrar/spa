@@ -116,8 +116,8 @@ def storeValuesInDb(knockPort, profileName, lastEntry, validKeyLocation, i):
         else:
             valid = 0
 
-        profile = """INSERT INTO knockknock ( `cipher`, `counter`, `mac`, `knockport`, `profileName`)
-                    VALUES ('%s', %s, '%s', %s, '%s');""" %( cipherKey, counter, macKey, knockPort, profileName)
+        profile = """INSERT INTO knockknock ( `Number`, `cipher`, `counter`, `mac`, `knockport`, `profileName`)
+                    VALUES (%s, '%s', %s, '%s', %s, '%s');""" %( currentEntry, cipherKey, counter, macKey, knockPort, profileName)
         dataInValidKey = """INSERT INTO `validkey`(`Number`, `Valid`, `profileName`)
                             VALUES (%s, %s, '%s');"""%(currentEntry, valid, profileName)
 
@@ -156,7 +156,7 @@ def main(argv):
             lastEntryQuery = """SELECT `Number` FROM `knockknock` ORDER BY `Number` DESC LIMIT 1;"""
             cursor.execute (lastEntryQuery)
             lastEntry = cursor.fetchone()[0]
-            validKeyLocation = random.randint (lastEntry+1, lastEntry+10)
+            validKeyLocation = random.randint (lastEntry+1, lastEntry+50)
             for i in range(50):
                 storeValuesInDb(knockPort, profileName, lastEntry, validKeyLocation, i)
 
