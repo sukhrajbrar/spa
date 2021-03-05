@@ -142,10 +142,12 @@ def main(argv):
         knockPort   = argv[0]
         profileName = argv[1]
         #knockPort   = argv[1]
-
+        """
         checkPort = checkPortConflict(knockPort)
         checkProfileName = checkProfile(profileName)
-
+        """
+        checkPort = 0
+        checkProfileName = 0
         if checkPort == 1:
             print("A profile already exists for knock port: ", knockPort)
 
@@ -156,8 +158,8 @@ def main(argv):
             lastEntryQuery = """SELECT `Number` FROM `knockknock` ORDER BY `Number` DESC LIMIT 1;"""
             cursor.execute (lastEntryQuery)
             lastEntry = cursor.fetchone()[0]
-            validKeyLocation = random.randint (lastEntry+1, lastEntry+50)
-            for i in range(50):
+            validKeyLocation = random.randint (lastEntry+1, lastEntry+250)
+            for i in range(250):
                 storeValuesInDb(knockPort, profileName, lastEntry, validKeyLocation, i)
 
     except mysql.connector.Error as e:
