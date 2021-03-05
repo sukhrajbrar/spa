@@ -99,6 +99,7 @@ class CryptoEngine:
 
         raise MacFailedException("Ciphertext failed to decrypt in range...")
         """
+        
         decrypted = ''
         (Number, profileName, cipher, counter, mac, knockport) = profile
         cipherCrypt = str(cipher) + str(counter).zfill(2)
@@ -107,5 +108,5 @@ class CryptoEngine:
 
         if decrypted[:10] == mac:
             return int(decrypted[10:])
-        else:
-            return MacFailedException("Ciphertext failed to decrypt in range...")
+
+        raise MacFailedException("Ciphertext failed to decrypt in range...")

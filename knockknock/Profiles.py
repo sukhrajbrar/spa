@@ -41,7 +41,7 @@ class Profiles:
 
         cursor  = db.cursor()
         cursor1 = db1.cursor()
-
+        
         query = """SELECT * FROM `knockknock` WHERE `knockport` = %s;"""%(port)
         cursor.execute(query)
         result = cursor.fetchall()
