@@ -28,8 +28,7 @@ class RuleTimer(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        #time.sleep(self.openDuration)
-        time.sleep(3)
+        time.sleep(self.openDuration)
         command = 'iptables -D ' + self.description
         command = command.split()
 
